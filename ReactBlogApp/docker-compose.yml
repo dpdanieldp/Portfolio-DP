@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  json-server:
+    image: vimagick/json-server
+    command: -H 0.0.0.0 -p 8000 -w db.json
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    restart: always
+
+  frontend:
+    container_name: react_blog_app_frontend
+    build: frontend/.
+    ports:
+      - "3000:3000"
+    depends_on:
+      - json-server
+    restart: unless-stopped
