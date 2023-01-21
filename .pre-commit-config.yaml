@@ -1,0 +1,27 @@
+repos:
+-   repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+    -   id: black
+        name: black
+        args: [--line-length=120]
+        description: Black is a PEP 8 compliant opinionated formatter with its own style.
+-   repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+    -   id: isort
+        name: isort
+        args: ["--profile", "black", --line-length=120]
+        description: isort is a Python utility / library to sort imports alphabetically, and automatically separated into sections and by type.
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        name: flake8
+        description: flake8 is a tool that glues together pycodestyle, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code.
+-   repo: https://github.com/pycqa/pylint
+    rev: v2.13.3
+    hooks:
+    -   id: pylint
+        name: pylint
+        description: Pylint is a Python static code analysis tool which looks for programming errors, helps enforcing a coding standard, sniffs for code smells and offers simple refactoring suggestions.

@@ -1,0 +1,13 @@
+.serverless
+/venv/
+.env
+node_modules
+exp.py
+.idea
+/DRFPostgresReactNotes/app/
+/DjangoReact/
+/FlaskPlanetsAPP/
+/AsyncFastapiSQS/package.json
+/AsyncFastapiSQS/package-lock.json
+/DjangoFoodApp/app/
+/FARMStackTodoJWT/data/
