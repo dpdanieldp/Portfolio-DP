@@ -28,9 +28,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "image",
-                    models.ImageField(
-                        default="profilepic.jpg", upload_to="profile_pictures"
-                    ),
+                    models.ImageField(default="profilepic.jpg", upload_to="profile_pictures"),
                 ),
                 ("location", models.CharField(max_length=100)),
                 (
