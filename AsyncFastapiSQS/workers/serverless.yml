@@ -1,0 +1,95 @@
+service: test-async-workers
+package:
+    individually: true
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-west-1
+  memorySize: 256
+  stage: ${opt:stage, 'qa'}
+
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "lambda:InvokeFunction"
+    - "logs:CreateLogGroup"
+    - "logs:CreateLogStream"
+    - "logs:PutLogEvents"
+    - "ec2:CreateNetworkInterface"
+    - "ec2:DeleteNetworkInterface"
+    - "ec2:DescribeNetworkInterfaces"
+    - "elasticache:*"
+    - "events:PutRule"
+    - "sqs:SendMessage"
+    - "sqs:DeleteMessage"
+    - "sqs:ChangeMessageVisibility"
+    - "sqs:ReceiveMessage"
+    - "sqs:GetQueueAttributes"
+    - "sqs:GetQueueUrl"
+    - "sqs:ListQueues"
+    - "sqs:ListQueueTags"
+    Resource: "*"
+
+
+  environment:
+    STAGE: ${opt:stage, 'qa'}
+    DELAY: '10'
+    RESPONSE_TIMEOUT: '20'
+
+
+# creating sqs queues with their workers
+
+constructs:
+  # dlq are automatically created for every queue
+    test-as-calculation:
+        type: queue
+        fifo: true
+        worker:
+            handler: handler.execute
+            module: calculation
+            timeout: 30 # Visibility Timeout for this queue will be set to 30*6, so 180s
+    # for above queue in case of error in worker lambda a message will be retried 3 times with delay timeout*6, so 180s
+
+    test-as-data:
+      type: queue
+      fifo: true
+      maxRetries: 1
+      worker:
+        handler: handler.execute
+        module: data
+        timeout: 30 # Visibility Timeout for this queue will be set to 30*6, so 180s
+    # for above queue I change maxRetries to 1 so in case of error in worker a message will not be retried
+    # and will be passed to dlq and to below logger lambda;
+
+
+# creating logger
+functions:
+  logger:
+    handler: handler.execute
+    module: logger
+    timeout: 30
+
+    environment:
+      SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN}
+      SLACK_CHANNEL: ${env:SLACK_CHANNEL}
+    events:
+      # logger function will be triggered by both dlqs for above queues
+      - sqs:
+         arn: ${construct:test-as-calculation.dlqArn}
+      - sqs:
+         arn: ${construct:test-as-data.dlqArn}
+
+plugins:
+  - serverless-python-requirements
+  - serverless-lift
+
+resources:
+  Outputs:
+      calcQueueName:
+        Value: "test-async-workers-dev-test-as-calculation.fifo"
+      dataQueueName:
+        Value: "test-async-workers-dev-test-as-data.fifo"
+

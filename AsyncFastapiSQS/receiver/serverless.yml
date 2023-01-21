@@ -1,0 +1,29 @@
+service: test-async-receiver
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-west-1
+  memorySize: 128
+  stage: ${opt:stage, 'qa'}
+
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "lambda:InvokeFunction"
+    - "logs:CreateLogGroup"
+    - "logs:CreateLogStream"
+    - "logs:PutLogEvents"
+    - "ec2:CreateNetworkInterface"
+    - "ec2:DeleteNetworkInterface"
+    - "ec2:DescribeNetworkInterfaces"
+    - "elasticache:*"
+    - "events:PutRule"
+    Resource: "*"
+
+
+functions:
+  receiver:
+    handler: receiver.receive_request
+    url: true # look https://www.serverless.com/blog/aws-lambda-function-urls-with-serverless-framework
+

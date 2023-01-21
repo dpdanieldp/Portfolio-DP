@@ -1,0 +1,46 @@
+service: test-async-api
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-west-1
+  memorySize: 256
+  stage: ${opt:stage, 'qa'}
+
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "lambda:InvokeFunction"
+    - "logs:CreateLogGroup"
+    - "logs:CreateLogStream"
+    - "logs:PutLogEvents"
+    - "ec2:CreateNetworkInterface"
+    - "ec2:DeleteNetworkInterface"
+    - "ec2:DescribeNetworkInterfaces"
+    - "elasticache:*"
+    - "events:PutRule"
+    - "sqs:SendMessage"
+    - "sqs:GetQueueAttributes"
+    - "sqs:GetQueueUrl"
+    - "sqs:ListQueues"
+    - "sqs:ListQueueTags"
+    Resource: "*"
+
+
+functions:
+  api:
+    handler: main.handler
+    environment:
+      EXAMPLE_RECEIVER_URL: ${env:EXAMPLE_RECEIVER_URL} # variable is taken from .env file
+      # below env variables are taken from output from workers service deployment
+      # look: https://www.serverless.com/blog/serverless-framework-compose-multi-service-deployments
+      CALC_Q_NAME: "test-async-workers-dev-test-as-calculation.fifo" #'${param:calcQueueName}'
+      DATA_Q_NAME: "test-async-workers-dev-test-as-data.fifo" #'${param:dataQueueName}'
+    url: true # look https://www.serverless.com/blog/aws-lambda-function-urls-with-serverless-framework
+    timeout: 900
+
+
+plugins:
+  - serverless-python-requirements

@@ -1,0 +1,10 @@
+services:
+
+  test-async-workers:
+    path: workers
+
+  test-async-api:
+    path: api
+    params:
+      calcQueueName: ${test-async-workers.calcQueueName}
+      dataQueueName: ${test-async-workers.dataQueueName}
