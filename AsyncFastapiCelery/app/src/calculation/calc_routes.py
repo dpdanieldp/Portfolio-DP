@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Header
-
-from src import utils, models
+from fastapi import APIRouter
+from src import models
 from src.calculation import calc_models, tasks
 
 router = APIRouter(prefix="/v1/calculation")
@@ -11,7 +10,7 @@ router = APIRouter(prefix="/v1/calculation")
     summary="Perform basic calculations",
     response_model=models.AsyncInstantResponse,
 )
-async def calculate_basic(
+def calculate_basic(
     request: calc_models.AsyncCalculationRequest,
 ):
     """

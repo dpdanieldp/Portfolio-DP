@@ -1,0 +1,10 @@
+# Use config map for not-secret configuration data
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-configmap
+  namespace: fastapi-celery
+data:
+  # Artificial delay for celery tasks in s
+  DELAY: "10"

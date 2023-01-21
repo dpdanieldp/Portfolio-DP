@@ -1,7 +1,4 @@
-# api/routes/__init__.py
-
 from fastapi import APIRouter
-
 from src.calculation import calc_routes
 from src.data import data_routes
 

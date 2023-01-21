@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  redis:
+    container_name: r01
+    image: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  app:
+    container_name: async_fastapi_celery_app
+    build:
+      context: ./app
+      dockerfile: docker/app.Dockerfile
+    image: ${DOCKERHUB_USERNAME}/fastapi-celery-example-app
+    ports:
+    - "8000:8000"
+    depends_on:
+    - redis
+    env_file:
+      - app/example.env
+    restart: unless-stopped
+
+  receiver:
+    container_name: receiver
+    build: receiver/.
+    image: ${DOCKERHUB_USERNAME}/fastapi-celery-example-receiver
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+
+  celery_worker:
+    container_name: cw01
+    build:
+      context: ./app
+      dockerfile: docker/worker.Dockerfile
+    image: ${DOCKERHUB_USERNAME}/fastapi-celery-example-worker
+    env_file:
+          - app/example.env
+    depends_on:
+      - app
+      - redis
+
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - FLOWER_PORT=5555
+      - FLOWER_BASIC_AUTH=example_user:example_password
+    ports:
+      - "5555:5555"
+    depends_on:
+          - app
+          - redis
+          - celery_worker
+
+
+
+
+
+

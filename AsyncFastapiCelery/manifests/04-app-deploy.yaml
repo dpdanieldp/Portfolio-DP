@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: fastapi-celery
+spec:
+  selector:
+    matchLabels:
+      app: fastapi-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-app
+        image: dpdan/fastapi-celery-example-app:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+          - configMapRef:
+              name: env-configmap
+          - secretRef:
+              name: env-secret

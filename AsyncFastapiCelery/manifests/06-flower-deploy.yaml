@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: flower
+  name: flower
+  namespace: fastapi-celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flower
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flower
+    spec:
+      containers:
+      - image: mher/flower
+        name: flower
+        env:
+          - name: CELERY_BROKER_URL
+            value: "redis://redis:6379/0"
+          - name: FLOWER_PORT
+            value: "5555"
+          - name: FLOWER_BASIC_AUTH
+            value: "example_user:example_pass"
+        resources: {}
+status: {}

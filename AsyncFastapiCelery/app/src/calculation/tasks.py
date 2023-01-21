@@ -1,16 +1,12 @@
-from celery import shared_task
+# pylint: disable= broad-except
 
-import settings
+from celery_worker import celery_app
 from src import utils
 
 
-
-@shared_task
+@celery_app.task
 def calculate(calculation_request: dict):
-    payload = {
-        "results": [],
-        "errors": []
-    }
+    payload = {"results": [], "errors": []}
     operations = {
         "+": (lambda num_1, num_2: num_1 + num_2),
         "-": (lambda num_1, num_2: num_1 - num_2),
