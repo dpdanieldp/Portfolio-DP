@@ -19,7 +19,7 @@
 # beeramid(5000, 3); // should === 16
 
 
-def beeramid(bonus, price):
+def beeramid(bonus: int, price: int) -> int:
     no_of_beers = bonus // price
     levels = 1
     while no_of_beers >= levels**2:

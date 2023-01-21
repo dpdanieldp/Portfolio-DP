@@ -1,7 +1,7 @@
 # Write a function that prints all prime numbers in range 1-n
 
 
-def print_prime(n):
+def print_prime(n: int):
     for num in range(1, n + 1):
         if all(num % i != 0 for i in range(2, num)):
             print(num)
@@ -10,7 +10,7 @@ def print_prime(n):
 # Write a sort function to sort numbers in list. Do not use built-in sort()
 
 
-def my_sort(array):
+def my_sort(array: list):
     sorted_lst = []
     while array:
         lowest = min(array)
@@ -22,9 +22,9 @@ def my_sort(array):
 # Write a function to print elements from Fibonacci series up to n-th element
 
 
-def fibonacci(n):
+def fibonacci(n: int):
     a, b = 0, 1
-    for i in range(n):
+    for _ in range(n):
         print(a)
         a, b = b, a + b
 
@@ -32,7 +32,7 @@ def fibonacci(n):
 # Write a function to print elements from list in reversed order
 
 
-def reversed(array):
+def reverse_list(array: list):
     while array:
         print(array[-1])
         del array[-1]
@@ -41,21 +41,21 @@ def reversed(array):
 #  Write a function to check if word is a palindrome or not
 
 
-def if_palindrome(word):
-    return True if word.lower() == word[::-1].lower() else False
+def if_palindrome(word: str) -> bool:
+    return word.lower() == word[::-1].lower()
 
 
 # Write a function to print set of duplicates in list
 
 
-def duplicates(array):
-    print(set([x for x in array if array.count(x) > 1]))
+def duplicates(array: list):
+    print({x for x in array if array.count(x) > 1})
 
 
 # Write a function to print number of words in given sentence
 
 
-def count_words(sentence):
+def count_words(sentence: str):
     print(len(sentence.split()))
 
 
@@ -70,16 +70,12 @@ def search(x, given_array):
         up_idx = len(given_array) - 1
 
         while up_idx >= 0:
-
             mid_idx = (low_idx + up_idx) // 2
             if given_array[mid_idx] == x:
                 return mid_idx
-            else:
-                if given_array[mid_idx] < x:
-                    low_idx = mid_idx + 1
-                elif given_array[mid_idx] > x:
-                    up_idx = mid_idx - 1
-
+            if given_array[mid_idx] < x:
+                low_idx = mid_idx + 1
+            elif given_array[mid_idx] > x:
+                up_idx = mid_idx - 1
         return False
-    else:
-        return "Given array is empty."
+    return "Given array is empty."

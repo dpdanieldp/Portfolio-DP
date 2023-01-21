@@ -15,7 +15,7 @@
 # Hint: You're not meant to calculate the factorial. Find another way to find the number of zeros.
 
 
-def zeros(n):
+def zeros(n: int) -> int:
     if n < 3:
         return n
     result = n

@@ -9,14 +9,13 @@
 # demanded that the new program be able to handle books up to 400,000,000,000,000,000 pages.
 
 
-def page_digits(pages):
+def page_digits(pages: int) -> int:
     if pages < 10:
         return pages
-    else:
-        sol = 9
-        for i in range(1, len(str(pages))):
-            x = 9 * (10**i)
-            sol += x * len(str(x))
+    sol = 9
+    for i in range(1, len(str(pages))):
+        x = 9 * (10**i)
+        sol += x * len(str(x))
 
-        sol -= (int("9" * len(str(pages))) - pages) * len(str(pages))
-        return sol
+    sol -= (int("9" * len(str(pages))) - pages) * len(str(pages))
+    return sol

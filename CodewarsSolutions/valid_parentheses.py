@@ -15,7 +15,7 @@
 # Do not treat other forms of brackets as parentheses (e.g. [], {}, <>).
 
 
-def valid_parentheses(string):
+def valid_parentheses(string: str) -> bool:
     if len(string) == 0:
         return True
     if "(" in string and ")" in string:
@@ -23,10 +23,12 @@ def valid_parentheses(string):
         idx_right = [i for i, c in enumerate(string) if c == ")"]
 
         if len(idx_left) == len(idx_right):
-            for i in range(len(idx_left)):
+            for i, _ in enumerate(idx_left):
                 if idx_left[i] > idx_right[i]:
                     return False
-            else:
-                return True
-
+            return True
     return False
+
+
+if __name__ == "__main__":
+    print(valid_parentheses("(())((()())())"))

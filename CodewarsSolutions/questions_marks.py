@@ -8,7 +8,7 @@
 # there are exactly 3 question marks between 6 and 4, and 3 question marks between 5 and 5 at the end of the string.
 
 
-def QuestionsMarks(strParam):
+def QuestionsMarks(strParam: str) -> bool:
     digits_idxs = [i for i, c in enumerate(strParam) if c.isdigit()]
     if len(digits_idxs) < 2:
         return False
@@ -25,5 +25,4 @@ def QuestionsMarks(strParam):
     for start, stop in zip(lst_start, lst_stop):
         if strParam[(start + 1) : stop].count("?") != 3:
             return False
-
     return True

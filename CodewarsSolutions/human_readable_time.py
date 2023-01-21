@@ -7,7 +7,7 @@
 # The maximum time never exceeds 359999 (99:59:59)
 
 
-def make_readable(seconds):
+def make_readable(seconds: int) -> str:
     hours_ret = seconds // 3600
     minutes_ret = (seconds - hours_ret * 3600) // 60
     seconds_ret = seconds - hours_ret * 3600 - minutes_ret * 60

@@ -1,4 +1,6 @@
-# Given n, take the sum of the digits of n. If that value has more than one digit, continue reducing in this way until a single-digit number is produced. The input will be a non-negative integer.
+# Given n, take the sum of the digits of n. If that value has more than one digit,
+# continue reducing in this way until a single-digit number is produced.
+# The input will be a non-negative integer.
 #
 # Examples
 #     16  -->  1 + 6 = 7
@@ -7,7 +9,11 @@
 # 493193  -->  4 + 9 + 3 + 1 + 9 + 3 = 29  -->  2 + 9 = 11  -->  1 + 1 = 2
 
 
-def digital_root(n):
+def digital_root(n: int) -> int:
     while len(str(n)) != 1:
-        n = sum([int(d) for d in str(n)])
+        n = sum((int(d) for d in str(n)))
     return n
+
+
+if __name__ == "__main__":
+    print(digital_root(493193))

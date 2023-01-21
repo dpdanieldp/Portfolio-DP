@@ -1,24 +1,23 @@
-#  Write a function for binary searching x in a given sorted list
-#  and return index of x in given list or return False
+# Write a function for binary searching x in a given sorted list
+# and return index of x in given list or return False
 
-given_list = list(range(23, 1876523, 3))
+from typing import List, Union
 
 
-def search(x, given_array):
-    if len(given_array) == 0:
-        return "Given array is empty."
+def search(x: int, lst: List[int]) -> Union[bool, int]:
     start = 0
-    end = len(given_array) - 1
+    end = len(lst) - 1
     while start <= end:
         mid_idx = (start + end) // 2
-        if given_array[mid_idx] == x:
+        if lst[mid_idx] == x:
             return mid_idx
-        else:
-            if given_array[mid_idx] < x:
-                start = mid_idx + 1
-            elif given_array[mid_idx] > x:
-                end = mid_idx - 1
+        if lst[mid_idx] < x:
+            start = mid_idx + 1
+        elif lst[mid_idx] > x:
+            end = mid_idx - 1
     return False
 
 
-print(search(56, given_list))
+if __name__ == "__main__":
+    given_lst = list(range(23, 1876523, 3))
+    print(search(56, given_lst))

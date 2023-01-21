@@ -18,7 +18,7 @@
 # you may assume that both n and k will always be >=1.
 
 
-def josephus_survivor(n, k):
+def josephus_survivor(n: int, k: int) -> int:
     soldiers = list(range(1, n + 1))
     k -= 1
     if k <= len(soldiers) - 1:
