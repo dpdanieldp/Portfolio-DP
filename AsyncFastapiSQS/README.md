@@ -48,7 +48,7 @@ at each stage of the process.
     }
     ```
 2. If request structure is correct, API sends a message to proper SQS queue (depending on request endpoint).
-3. If request structure is not correct, the client get `[422] Error: Unprocessable Entity` response detailing the error in the request structure.
+3. If request structure is not correct, the client gets `[422] Error: Unprocessable Entity` response detailing the error in the request structure.
 
    If at this stage the message fails to be sent to the queue, the client gets `[500] internal error` response.
 
@@ -74,21 +74,20 @@ which will be passed to the `callback_url` after the task is completed:
     ```json
     {
    "results": [
-   {
-   "calc_0": 123.76
-   },
-    {
-   "calc_1": 785687255.2435
-   }
-   ],
-   "errors": [
-   
-   ],
+        {
+          "calc_0": 123.76
+        },
+        {
+          "calc_1": 785687255.2435
+        }
+    ],
+   "errors": [],
    "task_id": "c558a80a-f319-4c10-95d4-4282ef745b4b"
    }
     ```
    
 [ERROR] scenario:
+
 5. If an error occurs in the worker after a message is delivered to it, the queue can retry a certain number of times
 (to be set, in this case: 3 for the calculation worker and 1 for the data worker) and with an appropriate delay (settable),
 and if all attempts fail, the message goes to the dead letter queue (one dlq for each queue).
